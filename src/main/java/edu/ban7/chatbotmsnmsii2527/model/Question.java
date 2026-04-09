@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,21 +16,25 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Recipe {
+public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
-    @NotBlank
-    protected String name;
+    private String content;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToOne
     protected AppUser creator;
 
     @ManyToMany
-    protected List<Tag> tags = new ArrayList<>();
+    @JoinTable(name ="question_included_tags")
+    private List<Tag> includedTags = new ArrayList<>();
 
-    protected int selectionCount = 0;
+    @ManyToMany
+    @JoinTable(name ="question_excluded_tags")
+    private List<Tag> excludedTags = new ArrayList<>();
 
 }
