@@ -1,0 +1,24 @@
+package edu.ban7.chatbotmsnmsii2527.dao;
+
+import edu.ban7.chatbotmsnmsii2527.model.Recipe;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface RecipeDao extends JpaRepository<Recipe,Integer> {
+
+//    @Query("SELECT new edu.ban7.chatbotmsnmsii2527.dao.RecipeDao.RecipeCount(r.name, count(*)) " +
+//            "FROM Recipe r " +
+//            "JOIN r.tags t")
+//    RecipeCount[] countTagByRecipe();
+//
+//    @Query("SELECT count(*) " +
+//            "FROM Recipe r " +
+//            "JOIN r.tags t " +
+//            "WHERE r.name = :name")
+//    int countTagByRecipeName(@Param("name") String name);
+//
+//    record RecipeCount (String name, long count){}
+}
