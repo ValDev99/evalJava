@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @RestController
@@ -35,6 +37,9 @@ public class AuthController {
     protected PasswordEncoder passwordEncoder;
     @Autowired
     protected AuthenticationProvider authenticationProvider;
+
+    @Value("${jwt.secret}")
+    protected String jwtSecret;
 
     @PostMapping("/sign-in")
     @Operation(
@@ -77,7 +82,7 @@ public class AuthController {
             String jwt = Jwts.builder()
                     .setSubject(user.getEmail())
                     .addClaims(Map.of("role", userDetails.getUser().isAdmin() ? "admin" : "user"))
-                    .signWith(SignatureAlgorithm.HS256, "secret")
+                    .signWith(SignatureAlgorithm.HS256, jwtSecret.getBytes(StandardCharsets.UTF_8))
                     .compact();
 
             return new ResponseEntity<>(jwt, HttpStatus.OK);

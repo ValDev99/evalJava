@@ -16,12 +16,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    @Value("${secret")
-    String secret;
+    @Value("${jwt.secret")
+    protected String jwtSecret;
 
     @Autowired
     UserDetailsService userDetailsService;
@@ -37,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
             String jwt = token.substring(7);
 
             String email = Jwts.parser()
-                    .setSigningKey("secret")
+                    .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8))
                     .parseClaimsJws(jwt)
                     .getBody()
                     .getSubject();
